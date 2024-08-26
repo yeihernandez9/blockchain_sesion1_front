@@ -1,43 +1,40 @@
-import React, { useContext, useEffect, useState } from 'react'
-import './Home.css'
-import { ApiContext } from '../../context/ApiContext'
-import { Button, Table } from 'react-bootstrap'
+import React, { useContext, useEffect, useState } from 'react';
+import './Home.css';
+import { ApiContext } from '../../context/ApiContext';
+import { Button, Alert } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import AddBlockchainModal from '../../componentes/AddBlockchainModal';
+import Table from 'react-bootstrap/Table';
 
 const Home = () => {
-  const {data, getChain, addChian} = useContext(ApiContext);
+  const { data, getChain, addChian, validateChain, isValid } = useContext(ApiContext);
   const [showModal, setShowModal] = useState(false);
 
-  useEffect(()=>{
-    if(getChain){
+  useEffect(() => {
+    if (getChain) {
       getChain();
     }
-  },[getChain]);
+  }, [getChain]);
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
 
-  /*const handleAddBlock = () =>{
-    console.log("AddBlock");
-    const newBlockData = {
-      data:{
-        amount: 60,
-        nombre: "se agregao el nuevo block"
-      }
-    };
-    if(addChian){
-      addChian(newBlockData);
+  const handleValidateChain = () => {
+    if (validateChain) {
+      validateChain();
     }
-  };*/
+  };
 
   return (
-    <Container>
-    <div className='container'>
-      <span className='title'>Bienvenido blockchain</span>
-    </div>
-    <Button onClick={handleShowModal}>Add Block</Button>
-    <Table>
+    <>
+      <Button onClick={handleShowModal}>Add Block</Button>
+      <Button onClick={handleValidateChain}>Validate Chain</Button>
+      {isValid !== null && (
+        <Alert variant={isValid ? 'success' : 'danger'}>
+          Blockchain is {isValid ? "valid" : "invalid"}
+        </Alert>
+      )}
+      <Table>
         <thead>
           <tr>
             <th>Index</th>
@@ -48,7 +45,7 @@ const Home = () => {
           </tr>
         </thead>
         <tbody>
-          {data.map((block, index)=>(
+          {data.map((block, index) => (
             <tr key={index}>
               <td>{block.index}</td>
               <td>{block.timestamp}</td>
@@ -59,9 +56,9 @@ const Home = () => {
           ))}
         </tbody>
       </Table>
-      <AddBlockchainModal show={showModal} handleClose={handleCloseModal} />
-    </Container>
+      <AddBlockchainModal show={showModal} handleClose={handleCloseModal} addChain={addChian} />
+    </>
   )
 }
 
-export default Home
+export default Home;

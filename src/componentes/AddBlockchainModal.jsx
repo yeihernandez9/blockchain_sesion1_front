@@ -1,22 +1,36 @@
 import React, { useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap';
 
-const AddBlockchainModal = ({show, handleClose}) => {
+const AddBlockchainModal = ({show, handleClose, addChain}) => {
+  const [amount, setAmount] =useState('');
+  const [nombre, setNombre] = useState('');
+
+  const handleSaveBlock = () =>{
+    const newBlockData = {
+        data:{
+          amount: amount,
+          nombre: nombre
+        }
+      };
+      addChain(newBlockData);
+      handleClose();
+  }
   
     return (
       <>
-
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
+            <Modal.Title>Add Block</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form>
               <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                <Form.Label>Email address</Form.Label>
+                <Form.Label>Amount</Form.Label>
                 <Form.Control
-                  type="email"
-                  placeholder="name@example.com"
+                  type="number"
+                  placeholder="Amount"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
                   autoFocus
                 />
               </Form.Group>
@@ -24,8 +38,13 @@ const AddBlockchainModal = ({show, handleClose}) => {
                 className="mb-3"
                 controlId="exampleForm.ControlTextarea1"
               >
-                <Form.Label>Example textarea</Form.Label>
-                <Form.Control as="textarea" rows={3} />
+                <Form.Label>Nombre</Form.Label>
+                <Form.Control 
+                  type = "text"
+                  value = {nombre}
+                  onChange = {(e) => setNombre(e.target.value)}
+                  placeholder='Nombre'
+                />
               </Form.Group>
             </Form>
           </Modal.Body>
@@ -33,8 +52,8 @@ const AddBlockchainModal = ({show, handleClose}) => {
             <Button variant="secondary" onClick={handleClose}>
               Close
             </Button>
-            <Button variant="primary" onClick={handleClose}>
-              Save Changes
+            <Button variant="primary" onClick={handleSaveBlock}>
+              Add Block
             </Button>
           </Modal.Footer>
         </Modal>
