@@ -7,14 +7,15 @@ import AddBlockchainModal from '../../componentes/AddBlockchainModal';
 import Table from 'react-bootstrap/Table';
 
 const Home = () => {
-  const { data, getChain, addChian, validateChain, isValid } = useContext(ApiContext);
+  const { data, getChain, addChian, validateChain, isValid, getBlock } = useContext(ApiContext);
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     if (getChain) {
+      console.log("bloc");
       getChain();
     }
-  }, [getChain]);
+  }, []);
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
@@ -25,16 +26,19 @@ const Home = () => {
     }
   };
 
+  const handleGetBlock = async (indexedDB) =>{
+    console.log(indexedDB);
+    await getBlock(indexedDB)
+  }
+
   return (
-    <>
-      <Button onClick={handleShowModal}>Add Block</Button>
-      <Button onClick={handleValidateChain}>Validate Chain</Button>
-      {isValid !== null && (
-        <Alert variant={isValid ? 'success' : 'danger'}>
-          Blockchain is {isValid ? "valid" : "invalid"}
-        </Alert>
-      )}
-      <Table>
+    <Container>
+
+    <div className='container-button'>
+     <Button onClick={handleShowModal} >Add Block</Button>
+    </div>
+    <div style={{ overflowX: 'auto' }}>
+    <Table>
         <thead>
           <tr>
             <th>Index</th>
@@ -42,6 +46,7 @@ const Home = () => {
             <th>Data</th>
             <th>Previus Hash</th>
             <th>Hash</th>
+            <th>Option</th>
           </tr>
         </thead>
         <tbody>
@@ -52,12 +57,17 @@ const Home = () => {
               <td>{JSON.stringify(block.data)}</td>
               <td>{block.previousHash}</td>
               <td>{block.hash}</td>
+              <td>
+                <Button variant="success" onClick={() => handleGetBlock(block.index)}>Consultar</Button>
+              </td>
             </tr>
           ))}
         </tbody>
       </Table>
+    </div>
+      
       <AddBlockchainModal show={showModal} handleClose={handleCloseModal} addChain={addChian} />
-    </>
+    </Container>
   )
 }
 

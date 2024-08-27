@@ -31,14 +31,23 @@ export const ApiProvider = ({ children }) => {
         }
     }
 
-   
+
+   const getBlock = async (block) => {
+        try {
+            const response = await fetch(`http://localhost:3000/getBlock/${block}`);
+            const result = await response.json();
+            setData(result);
+        } catch (error) {
+            console.error("Error fetching chain data:", error);
+        }
+    };
 
     useEffect(() => {
         getChain();
     }, []);
 
     return (
-        <ApiContext.Provider value={{ data, getChain, addChian}}>
+        <ApiContext.Provider value={{ data, getChain, addChian, getBlock}}>
             {children}
         </ApiContext.Provider>
     );

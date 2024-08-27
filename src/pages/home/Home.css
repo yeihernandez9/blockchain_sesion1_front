@@ -7,3 +7,36 @@
     font-weight: bold;
     color: green;
 }
+
+.container-button{
+    display: flex;
+    margin-top: 10px;
+}
+
+.table{
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #ddd;
+    overflow : hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+td{
+    max-width: 150px;
+    word-wrap: break-word;
+}
+
+@media screen and (max-width: 768px){
+    
+}
